@@ -1,13 +1,6 @@
 package guestbook.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
@@ -16,45 +9,32 @@ import guestbook.vo.GuestbookVo;
 
 @Repository
 public class GuestbookRepository {
-    private final DataSource dataSource;
     private final JdbcContext jdbcContext;
 
-    public GuestbookRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-        this.jdbcContext = new JdbcContext(dataSource);
+    public GuestbookRepository(JdbcContext jdbcContext) {
+        this.jdbcContext = jdbcContext;
     }
 
     public List<GuestbookVo> findAll() {
-        List<GuestbookVo> list = new ArrayList<>();
-
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("""
+        return jdbcContext.findMany(
+            """
                 SELECT
                     id, name, contents,
                     DATE_FORMAT(guestbook.reg_date, '%Y-%m-%d %h:%i:%s') AS reg_date_formatted,
                     ROW_NUMBER() over (ORDER BY reg_date DESC) AS guestbook_index
                 FROM guestbook;
-                """
-            )
-        ) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+                """,
+            (rs, rowNum) -> {
+                GuestbookVo guestbookVo = new GuestbookVo();
+                guestbookVo.setId(rs.getLong("id"));
+                guestbookVo.setName(rs.getString("name"));
+                guestbookVo.setContents(rs.getString("contents"));
+                guestbookVo.setRegDate(rs.getString("reg_date_formatted"));
+                guestbookVo.setIndex(rs.getInt("guestbook_index"));
 
-            while (resultSet.next()) {
-                GuestbookVo vo = new GuestbookVo();
-                vo.setId(resultSet.getLong("id"));
-                vo.setName(resultSet.getString("name"));
-                vo.setRegDate(resultSet.getString("reg_date_formatted"));
-                vo.setContents(resultSet.getString("contents"));
-                vo.setIndex(resultSet.getInt("guestbook_index"));
-
-                list.add(vo);
+                return guestbookVo;
             }
-        } catch (SQLException e) {
-            System.out.println("sql error: " + e.getMessage());
-        }
-
-        return list;
+        );
     }
 
     public int add(GuestbookVo vo) {
