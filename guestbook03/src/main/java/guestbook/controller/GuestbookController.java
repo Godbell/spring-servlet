@@ -1,6 +1,9 @@
 package guestbook.controller;
 
+import java.util.Enumeration;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import guestbook.repository.GuestbookRepository;
 import guestbook.vo.GuestbookVo;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class GuestbookController {
@@ -17,7 +22,28 @@ public class GuestbookController {
     private GuestbookRepository guestbookRepository;
 
     @RequestMapping("/")
-    public String index(Model model) {
+    public String index(HttpServletRequest req, Model model) {
+        ServletContext servletContext = req.getServletContext();
+        Enumeration<String> enumeration = servletContext.getAttributeNames();
+
+        while (enumeration.hasMoreElements()) {
+            String name = enumeration.nextElement();
+            System.out.println(name);
+        }
+
+        ApplicationContext applicationContext1
+            = (ApplicationContext)servletContext.getAttribute(
+            "org.springframework.web.context.WebApplicationContext.ROOT");
+        ApplicationContext applicationContext2
+            = (ApplicationContext)servletContext.getAttribute(
+            "org.springframework.web.servlet.FrameworkServlet.CONTEXT.spring");
+
+        GuestbookRepository repository = applicationContext1.getBean(GuestbookRepository.class);
+        System.out.println(repository);
+
+        GuestbookController controller = applicationContext2.getBean(GuestbookController.class);
+        System.out.println(controller);
+
         model.addAttribute("list", guestbookRepository.findAll());
         return "index";
     }

@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller("/user")
+@RequestMapping("/user")
+@Controller
 public class UserController {
     @RequestMapping(value = "/join", method = RequestMethod.GET)
     public String join() {
