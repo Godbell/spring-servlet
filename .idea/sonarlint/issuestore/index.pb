@@ -67,3 +67,7 @@ w
 Gguestbook03/src/main/java/guestbook/controller/GuestbookController.java,6/8/682d8ee0a55ae91d7e75c4a5e087d2bdfd210811
 t
 Dhellospring/src/main/java/hellospring/interceptor/MyInterceptor.java,0/e/0e9a9427a5e250bd26a27703074925d89cf3223c
+~
+Nguestbook03/src/main/java/guestbook/repository/template/StatementStrategy.java,6/a/6aa8a82f92df631efa5a3523ff3dc4d243ad42aa
+x
+Hguestbook03/src/main/java/guestbook/repository/template/JdbcContext.java,f/1/f13f21c52eecdc0ca4926d17ff41f6bf432d6bbd
