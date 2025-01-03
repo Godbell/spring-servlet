@@ -5,6 +5,11 @@
          id="WebApp_ID" version="3.0">
     <display-name>fileUpload</display-name>
 
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+
     <!-- Welcome Files -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
