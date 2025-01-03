@@ -12,5 +12,6 @@
       <module>emaillist03</module>
       <module>guestbook03</module>
       <module>logex</module>
+      <module>fileUpload</module>
   </modules>
 </project>
