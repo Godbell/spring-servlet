@@ -15,5 +15,6 @@
         <module>fileUpload</module>
         <module>locale</module>
         <module>aop</module>
+        <module>validation</module>
     </modules>
 </project>
