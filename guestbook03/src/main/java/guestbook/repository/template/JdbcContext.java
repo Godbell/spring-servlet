@@ -25,7 +25,7 @@ public class JdbcContext {
         );
     }
 
-    public int update(String sql, Object[] parameters) {
+    public int update(String sql, Object... parameters) {
         return executeUpdate(
             connection -> connection.prepareStatement(sql),
             parameters
@@ -34,7 +34,7 @@ public class JdbcContext {
 
     private int executeUpdate(
         StatementStrategy statementStrategy,
-        Object[] parameters
+        Object... parameters
     ) {
         try (
             Connection connection = dataSource.getConnection();

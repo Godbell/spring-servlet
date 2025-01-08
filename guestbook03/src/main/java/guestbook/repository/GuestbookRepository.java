@@ -2,6 +2,7 @@ package guestbook.repository;
 
 import java.util.List;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
 import guestbook.repository.template.JdbcContext;
@@ -24,16 +25,7 @@ public class GuestbookRepository {
                     ROW_NUMBER() over (ORDER BY reg_date DESC) AS guestbook_index
                 FROM guestbook;
                 """,
-            (rs, rowNum) -> {
-                GuestbookVo guestbookVo = new GuestbookVo();
-                guestbookVo.setId(rs.getLong("id"));
-                guestbookVo.setName(rs.getString("name"));
-                guestbookVo.setContents(rs.getString("contents"));
-                guestbookVo.setRegDate(rs.getString("reg_date_formatted"));
-                guestbookVo.setIndex(rs.getInt("guestbook_index"));
-
-                return guestbookVo;
-            }
+            new BeanPropertyRowMapper<>(GuestbookVo.class)
         );
     }
 
@@ -45,7 +37,7 @@ public class GuestbookRepository {
                 VALUES
                     (?, ?, ?, NOW());
                 """,
-            new Object[] {vo.getName(), vo.getPassword(), vo.getContents()}
+            vo.getName(), vo.getPassword(), vo.getContents()
         );
     }
 
@@ -54,7 +46,7 @@ public class GuestbookRepository {
             """
                 DELETE FROM guestbook WHERE id = ? AND password = ?;
                 """,
-            new Object[] {id, password}
+            id, password
         );
     }
 }
