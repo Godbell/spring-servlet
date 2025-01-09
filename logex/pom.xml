@@ -116,6 +116,6 @@
 
     </dependencies>
     <build>
-        <finalName>guestbook03</finalName>
+        <finalName>logex</finalName>
     </build>
 </project>
