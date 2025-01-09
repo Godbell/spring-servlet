@@ -35,6 +35,6 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>app</finalName>
+        <finalName>aop</finalName>
     </build>
 </project>
