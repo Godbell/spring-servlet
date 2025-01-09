@@ -58,7 +58,7 @@
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
             <version>3.0.1</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
@@ -67,5 +67,16 @@
     </dependencies>
     <build>
         <finalName>validation</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <url>${tomcat.deploy.url}</url>
+                    <server>tomcat-poscodx</server>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

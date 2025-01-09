@@ -21,15 +21,28 @@ public class GuestbookRepository {
             """
                 SELECT
                     id, name, contents,
-                    DATE_FORMAT(guestbook.reg_date, '%Y-%m-%d %h:%i:%s') AS reg_date_formatted,
-                    ROW_NUMBER() over (ORDER BY reg_date DESC) AS guestbook_index
+                    DATE_FORMAT(guestbook.reg_date, '%Y-%m-%d %h:%i:%s') AS regDate,
+                    ROW_NUMBER() over (ORDER BY reg_date DESC) AS "index"
                 FROM guestbook;
                 """,
             new BeanPropertyRowMapper<>(GuestbookVo.class)
         );
     }
 
-    public int add(GuestbookVo vo) {
+    public GuestbookVo findById(Long id) {
+        return jdbcContext.findOne(
+            """
+                SELECT
+                    id, name, contents, DATE_FORMAT(reg_date, '%Y-%m-%d') AS regDate
+                FROM guestbook
+                WHERE id = ?;
+                """,
+            new BeanPropertyRowMapper<>(GuestbookVo.class),
+            id
+        );
+    }
+
+    public int insert(GuestbookVo vo) {
         return jdbcContext.update(
             """
                 INSERT INTO guestbook

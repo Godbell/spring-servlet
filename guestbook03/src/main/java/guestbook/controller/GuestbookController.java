@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import guestbook.repository.GuestbookRepository;
+import guestbook.service.GuestbookService;
 import guestbook.vo.GuestbookVo;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 public class GuestbookController {
     @Autowired
-    private GuestbookRepository guestbookRepository;
+    private GuestbookService guestbookService;
 
     @RequestMapping("/")
     public String index(HttpServletRequest req, Model model) {
@@ -44,13 +45,13 @@ public class GuestbookController {
         GuestbookController controller = applicationContext2.getBean(GuestbookController.class);
         System.out.println(controller);
 
-        model.addAttribute("list", guestbookRepository.findAll());
+        model.addAttribute("list", guestbookService.getGuestbooks());
         return "index";
     }
 
     @RequestMapping("/add")
     public String add(GuestbookVo vo) {
-        guestbookRepository.add(vo);
+        guestbookService.add(vo);
         return "redirect:/";
     }
 
@@ -70,7 +71,7 @@ public class GuestbookController {
             return "redirect:/";
         }
 
-        guestbookRepository.deleteByIdAndPassword(id, password);
+        guestbookService.delete(id, password);
         return "redirect:/";
     }
 }
