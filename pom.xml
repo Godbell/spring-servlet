@@ -16,6 +16,7 @@
         <module>locale</module>
         <module>aop</module>
         <module>validation</module>
+        <module>bean-wiring</module>
     </modules>
 
     <build>
